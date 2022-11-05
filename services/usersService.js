@@ -1,5 +1,6 @@
-const bcrypt = require('bcrypt');
-const UserModel = require('./../models/userModel');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const UserModel = require("./../models/userModel");
 
 const registerUser = async (userData) => {
   try {
@@ -9,8 +10,8 @@ const registerUser = async (userData) => {
     await user.save();
     return {
       response: user,
-      httpStatus: 201
-    }
+      httpStatus: 201,
+    };
   } catch (error) {
     return {
       response: "server error",
@@ -25,44 +26,50 @@ const loginUser = async (userData) => {
     if (user) {
       const match = await bcrypt.compare(userData.password, user.password);
       if (match) {
-        // TODO: crear token
+        const payload = {
+          id: user._id,
+          name: user.name,
+        };
+        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+          expiresIn: 60,
+        });
         return {
           response: {
-            token: 'xxxxxyyyy'
+            token: token,
           },
-          httpStatus: 200
-        }
+          httpStatus: 200,
+        };
       }
     }
     return {
       response: "user unauthorized",
       httpStatus: 401,
-    }
+    };
   } catch (error) {
     return {
       response: "server error",
       httpStatus: 500,
     };
   }
-}
+};
 
 const infoUser = async (id) => {
   try {
     const user = await UserModel.findById(id);
     return {
       response: user,
-      httpStatus: user ? 200 : 404
-    }
+      httpStatus: user ? 200 : 404,
+    };
   } catch (error) {
     return {
       response: "server error",
       httpStatus: 500,
     };
   }
-} 
+};
 
 module.exports = {
   registerUser,
   loginUser,
-  infoUser
-}
+  infoUser,
+};
