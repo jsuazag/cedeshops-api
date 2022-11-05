@@ -13,7 +13,7 @@ const login = async (req, res) => {
 }
 
 const info = async (req, res) => {
-    const id = ""; // TODO: pendiente...
+    const {id} = req.payload;
     const { response, httpStatus } = await infoUser(id);
     res.status(httpStatus).json(response);
 }
