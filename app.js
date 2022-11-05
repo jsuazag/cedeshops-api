@@ -10,10 +10,8 @@ const PORT = 3001;
 const shopsRoutes = require('./routes/shops');
 app.use('/shops', shopsRoutes);
 
-/*
 const productsRoutes = require('./routes/products');
 app.use('/products', productsRoutes);
-*/
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
