@@ -30,9 +30,12 @@ const loginUser = async (userData) => {
           id: user._id,
           name: user.name,
         };
-        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
+        /*
+        , {
           expiresIn: 60,
-        });
+        }
+        */
         return {
           response: {
             token: token,
